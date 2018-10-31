@@ -28,4 +28,10 @@ public class ConnectionDB{
         return conDB;
     }
     
+    public static void close(ResultSet result, Statement s, Connection c) {
+        try { if (result != null) result.close(); } catch (Exception e) {}
+        try { if (s != null) s.close(); } catch (Exception e) {}
+        try { if (c != null) c.close(); } catch (Exception e) {}
+    }
+    
 }

@@ -17,6 +17,8 @@ import Modelo.*;
 @WebService(serviceName = "PideloAppWS")
 public class PideloAppWS {
 
+    Methods methods = new Methods();
+    
     /**
      * Web service operation
      * @param usuario
@@ -25,8 +27,7 @@ public class PideloAppWS {
      */
     @WebMethod(operationName = "Login")
     public boolean Login(@WebParam(name = "usuario") String usuario, @WebParam(name = "contrasenia") String contrasenia) {
-        //TODO write your implementation code here:
-        Methods methods = new Methods();
+        //Web method to login
         if (methods.Login(usuario, contrasenia)==true) {
             return true;
         }
@@ -35,13 +36,27 @@ public class PideloAppWS {
         }
         
     }
+    
 
     /**
      * Web service operation
+     * @param user
+     * @param email
+     * @param newPassword
+     * @return 
      */
     @WebMethod(operationName = "ChangePassword")
-    public String ChangePassword(@WebParam(name = "email") String email, @WebParam(name = "password") String password, @WebParam(name = "newPassword") String newPassword) {
+    public String ChangePassword(@WebParam(name = "user") String user, @WebParam(name = "email") String email, 
+            @WebParam(name = "newPassword") String newPassword) {
         //TODO write your implementation code here:
-        return null;
+        String msg="";
+        msg=methods.changePass(user,email,newPassword);
+        if (msg.equals("Operacion exitosa")) {
+            return "La contraseña se modifico correctamente :)";
+        }
+        else{
+            return "Ocurrio un error";
+        }
+        
     }
 }

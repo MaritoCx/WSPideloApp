@@ -14,7 +14,7 @@ import java.sql.Connection;
 public class Methods {
     Connection connDB=null;
     boolean correct=true;
-    
+    ResultSet result=null;
     static CallableStatement call=null;
     
     /*Calling the login function in database*/
@@ -26,7 +26,7 @@ public class Methods {
             call.setString(1, usser);
             call.setString(2, pass);
             call.execute();
-            ResultSet result = call.getResultSet();
+            result = call.getResultSet();
              
             while(result.next()){
                 correct=result.getBoolean(1);
@@ -41,9 +41,35 @@ public class Methods {
             
         }catch (SQLException e){
             
+        }finally{
+            ConnectionDB.close(result,call,connDB);
         }
         
             return correct;
+    }
+    
+    /*Calling the storage procedure to change the password*/
+    public String changePass(String user, String email, String pass){
+        String msg="";
+        
+        String query="Call changePassword(?,?,?,?)";
+        connDB= ConnectionDB.ConnectionDB();
+        try{
+            call=connDB.prepareCall(query);
+            call.setString(1, user);
+            call.setString(2, email);
+            call.setString(3, pass);
+            call.registerOutParameter(4, java.sql.Types.VARCHAR);
+            call.execute();
+            
+            msg=call.getNString(4);
+       
+        }catch(SQLException e){
+            
+        }finally{
+            ConnectionDB.close(result,call,connDB);
+        }
+        return msg;
     }
     
 }
