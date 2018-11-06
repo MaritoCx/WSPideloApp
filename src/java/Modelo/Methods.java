@@ -4,21 +4,23 @@
  * and open the template in the editor.
  */
 package Modelo;
+import Objects.Restaurant;
 import java.sql.*;
 import java.sql.CallableStatement;
 import java.sql.Connection;  
+import java.util.ArrayList;
 /**
  *
  * @author maritocx
  */
 public class Methods {
     Connection connDB=null;
-    boolean correct=true;
+    String correct="";
     ResultSet result=null;
     static CallableStatement call=null;
     
     /*Calling the login function in database*/
-    public boolean Login(String usser, String pass){
+    public String Login(String usser, String pass){
         String query ="Select Login(?,?)";  
         connDB = ConnectionDB.ConnectionDB();
         try{
@@ -29,14 +31,17 @@ public class Methods {
             result = call.getResultSet();
              
             while(result.next()){
-                correct=result.getBoolean(1);
+                correct=result.getString(1);
             }
             
-            if (correct==true) {
+            if (correct.equals("Login correcto")) {
+                return correct;
+            }
+            else if(correct.equals("Usuario correcto")){
                 return correct;
             }
             else{
-                correct=false;
+                return correct;
             }
             
         }catch (SQLException e){
@@ -62,7 +67,7 @@ public class Methods {
             call.registerOutParameter(4, java.sql.Types.VARCHAR);
             call.execute();
             
-            msg=call.getNString(4);
+            msg=call.getString(4);
        
         }catch(SQLException e){
             
@@ -70,6 +75,16 @@ public class Methods {
             ConnectionDB.close(result,call,connDB);
         }
         return msg;
+    }
+    
+    /*Calling the storage procedure to fill the Restaurants*/
+    public ArrayList fill(){
+        ArrayList<Restaurant> Lrestaurant = new ArrayList<Restaurant>();
+        Restaurant restaurant1 = new Restaurant();
+        
+        String query="";
+        
+        return Lrestaurant;
     }
     
 }

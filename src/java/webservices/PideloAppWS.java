@@ -26,13 +26,16 @@ public class PideloAppWS {
      * @return 
      */
     @WebMethod(operationName = "Login")
-    public boolean Login(@WebParam(name = "usuario") String usuario, @WebParam(name = "contrasenia") String contrasenia) {
+    public String Login(@WebParam(name = "usuario") String usuario, @WebParam(name = "contrasenia") String contrasenia) {
         //Web method to login
-        if (methods.Login(usuario, contrasenia)==true) {
-            return true;
+        if (methods.Login(usuario, contrasenia).equals("Login correcto")) {
+            return "Login correcto";
+        }
+        else if(methods.Login(usuario, contrasenia).equals("Usuario correcto")){
+            return "Usuario correcto";
         }
         else{
-            return false;    
+            return "Error";    
         }
         
     }
@@ -59,4 +62,5 @@ public class PideloAppWS {
         }
         
     }
+    
 }
